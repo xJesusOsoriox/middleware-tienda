@@ -1,7 +1,7 @@
 <?php
 include '../middleware.php';
+$Middleware2 = AccederMiddleware2();
 usarMiddleware('Navegación: Gestión de Productos'); // Registrar navegación al módulo
-include '../db.php';
 
 // Operaciones CRUD
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -46,10 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Obtener todos los productos
-$sql = "SELECT * FROM productos";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$productos = $stmt->fetchAll();
+
 ?>
 
 <style>
@@ -145,20 +142,20 @@ $productos = $stmt->fetchAll();
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($productos as $producto): ?>
+            <?php foreach ($Middleware2 as $MD): ?>
                 <tr>
-                    <td><?= $producto['id']; ?></td>
-                    <td><?= $producto['nombre']; ?></td>
-                    <td><?= $producto['precio']; ?></td>
+                    <td><?= $MD['id']; ?></td>
+                    <td><?= $MD['nombre']; ?></td>
+                    <td><?= $MD['precio']; ?></td>
                     <td>
                         <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditar" 
-                                data-id="<?= $producto['id']; ?>" 
-                                data-nombre="<?= $producto['nombre']; ?>" 
-                                data-precio="<?= $producto['precio']; ?>">
+                                data-id="<?= $MD['id']; ?>" 
+                                data-nombre="<?= $MD['nombre']; ?>" 
+                                data-precio="<?= $MD['precio']; ?>">
                             Editar
                         </button>
                         <form method="POST" class="d-inline">
-                            <input type="hidden" name="id" value="<?= $producto['id']; ?>">
+                            <input type="hidden" name="id" value="<?= $MD['id']; ?>">
                             <input type="hidden" name="accion" value="Eliminar producto">
                             <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                         </form>

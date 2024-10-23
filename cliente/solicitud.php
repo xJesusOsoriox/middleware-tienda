@@ -1,11 +1,6 @@
 <?php
-include '../db.php';
-
-// Consulta para obtener los registros de accesos y acciones, ordenados por fecha
-$sql = "SELECT * FROM accesos ORDER BY fecha ASC";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$accesos = $stmt->fetchAll();
+include '../middleware.php';
+$Middleware = AccederMiddleware();
 ?>
 
 <!DOCTYPE html>
@@ -40,12 +35,12 @@ $accesos = $stmt->fetchAll();
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($accesos as $acceso): ?>
+                <?php foreach ($Middleware as $MD): ?>
                     <tr>
-                        <td><?= $acceso['id']; ?></td>
-                        <td><?= $acceso['ruta']; ?></td>
-                        <td><?= $acceso['accion']; ?></td>
-                        <td><?= $acceso['fecha']; ?></td>
+                        <td><?= $MD['id']; ?></td>
+                        <td><?= $MD['ruta']; ?></td>
+                        <td><?= $MD['accion']; ?></td>
+                        <td><?= $MD['fecha']; ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

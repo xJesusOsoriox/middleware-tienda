@@ -1,8 +1,8 @@
 <?php
 session_start();
 include '../middleware.php';
+$Middleware = AccederMiddleware3();
 usarMiddleware('Navegación: Gestión de Usuarios'); // Registrar navegación al módulo
-include '../db.php';
 
 // Función para registrar acciones
 function registrarAccion($accion) {
@@ -76,11 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 
-// Obtener usuarios
-$sql = "SELECT * FROM usuarios";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$usuarios = $stmt->fetchAll();
+
 
 // Mostrar mensaje si existe
 if (isset($_SESSION['mensaje'])) {
@@ -181,22 +177,22 @@ if (isset($_SESSION['mensaje'])) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($usuarios as $usuario): ?>
+                <?php foreach ($Middleware as $MD): ?>
                     <tr>
-                        <td><?= $usuario['id']; ?></td>
-                        <td><?= $usuario['nombre']; ?></td>
-                        <td><?= $usuario['correo']; ?></td>
+                        <td><?= $MD['id']; ?></td>
+                        <td><?= $MD['nombre']; ?></td>
+                        <td><?= $MD['correo']; ?></td>
                         <td>
                             <form method="POST" style="display:inline;">
-                                <input type="hidden" name="id" value="<?= $usuario['id']; ?>">
+                                <input type="hidden" name="id" value="<?= $MD['id']; ?>">
                                 <button type="submit" name="eliminar" class="btn btn-danger btn-sm">Eliminar</button>
                             </form>
-                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal<?= $usuario['id']; ?>">
+                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal<?= $MD['id']; ?>">
                                 Editar
                             </button>
 
                             <!-- Modal para editar usuario -->
-                            <div class="modal fade" id="editModal<?= $usuario['id']; ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="editModal<?= $MD['id']; ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -205,14 +201,14 @@ if (isset($_SESSION['mensaje'])) {
                                         </div>
                                         <div class="modal-body">
                                             <form method="POST">
-                                                <input type="hidden" name="id" value="<?= $usuario['id']; ?>">
+                                                <input type="hidden" name="id" value="<?= $MD['id']; ?>">
                                                 <div class="mb-3">
                                                     <label for="nombreEdit" class="form-label">Nombre</label>
-                                                    <input type="text" class="form-control" id="nombreEdit" name="nombre" value="<?= $usuario['nombre']; ?>" required>
+                                                    <input type="text" class="form-control" id="nombreEdit" name="nombre" value="<?= $MD['nombre']; ?>" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="correoEdit" class="form-label">Correo</label>
-                                                    <input type="email" class="form-control" id="correoEdit" name="correo" value="<?= $usuario['correo']; ?>" required>
+                                                    <input type="email" class="form-control" id="correoEdit" name="correo" value="<?= $MD['correo']; ?>" required>
                                                 </div>
                                                 <button type="submit" name="editar" class="btn btn-primary">Actualizar Usuario</button>
                                             </form>

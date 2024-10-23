@@ -10,6 +10,30 @@ function registrarAcceso($ruta, $accion, $conn) {
     $stmt->execute();
 }
 
+function AccederMiddleware() {
+    global $conn; // Usamos la conexión a la base de datos existente
+    $sql = "SELECT * FROM accesos ORDER BY fecha ASC";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(); // Devuelve los registros
+}
+
+function AccederMiddleware2() {
+    global $conn; // Usamos la conexión a la base de datos existente
+    $sql = "SELECT * FROM productos";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(); // Devuelve los registros
+}
+
+function AccederMiddleware3() {
+    global $conn; // Usamos la conexión a la base de datos existente
+    $sql = "SELECT * FROM usuarios";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(); // Devuelve los registros
+}
+
 function usarMiddleware($accion = null) {
     global $conn;
     $ruta = $_SERVER['REQUEST_URI'];
